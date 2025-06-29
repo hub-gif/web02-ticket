@@ -422,7 +422,7 @@
     <div class="search-section">
         <h2 class="section-title">车票查询</h2>
 
-        <form id="searchForm" action="<%= request.getContextPath() %>/search" method="get">
+        <form id="searchForm" action="<%= request.getContextPath() %>/ticket/search" method="get">
             <div class="search-form">
                 <div class="search-form-group">
                     <label for="from-station">出发站</label>
@@ -450,41 +450,60 @@
         </form>
     </div>
 
-    <div class="search-results">
+    <!-- 搜索结果展示区域 -->
+    <!-- 搜索结果区 -->
+      <div class="search-results">
         <h2 class="section-title">查询结果</h2>
 
-        <c:if test="${empty trainList}">
+        <c:choose>
+          <c:when test="${empty trainList}">
             <div class="alert alert-info">
-                暂无符合条件的列车信息，请调整查询条件。
+              暂无符合条件的列车信息，请调整查询条件。
             </div>
-        </c:if>
-
-        <c:forEach items="${trainList}" var="train">
-            <div class="result-item">
-                <div>
-                    <div class="result-time"><c:out value="${train.departTime}"/></div>
-                    <div class="result-stations">
-                        <span class="station-name"><c:out value="${train.fromStation}"/></span>
-                        <i class="fas fa-long-arrow-alt-right"></i>
-                        <span class="station-name"><c:out value="${train.toStation}"/></span>
-                    </div>
+          </c:when>
+          <c:otherwise>
+            <div>共找到 ${fn:length(trainList)} 条车次</div>
+            <c:forEach var="ticket" items="${trainList}">
+              <div class="result-item">
+                <div class="result-time">
+                  出发：<c:out value="${ticket.train.departureTime}"/>
+                  到达：<c:out value="${ticket.train.arrivalTime}"/>
                 </div>
-
+                <div class="result-stations">
+                  <span class="station-name">
+                    <c:out value="${ticket.train.startStation.stationName}"/>
+                  </span>
+                  <i class="fas fa-long-arrow-alt-right"></i>
+                  <span class="station-name">
+                    <c:out value="${ticket.train.endStation.stationName}"/>
+                  </span>
+                </div>
                 <div class="result-duration">
-                    <c:out value="${train.duration}"/>
+                  时长：<c:out value="${ticket.train.duration}"/>
                 </div>
-
                 <div class="result-train">
-                    <c:out value="${train.trainNumber}"/>次
+                  车次：<c:out value="${ticket.train.trainNumber}"/>
                 </div>
-
-                <div>
-                    <div class="result-price">¥<c:out value="${train.price}"/></div>
-                    <button class="book-btn" onclick="bookTicket('${fn:escapeXml(train.trainNumber)}', '${fn:escapeXml(train.fromStation)}', '${fn:escapeXml(train.toStation)}', '${fn:escapeXml(train.departTime)}', '${fn:escapeXml(train.arriveTime)}', '${fn:escapeXml(train.price)}')">预订</button>
+                <div class="result-price">
+                  票价：¥<c:out value="${ticket.basePrice * ticket.seatType.priceMultiplier}"/>
                 </div>
-            </div>
-        </c:forEach>
-    </div>
+                <button class="book-btn"
+                        onclick="bookTicket(
+                          '${fn:escapeXml(ticket.id)}',
+                          '${fn:escapeXml(ticket.train.trainNumber)}',
+                          '${fn:escapeXml(ticket.train.startStation.stationName)}',
+                          '${fn:escapeXml(ticket.train.endStation.stationName)}',
+                          '${fn:escapeXml(ticket.train.departureTime)}',
+                          '${fn:escapeXml(ticket.train.arrivalTime)}',
+                          '${fn:escapeXml(ticket.basePrice * ticket.seatType.priceMultiplier)}'
+                        )">
+                  预订
+                </button>
+              </div>
+            </c:forEach>
+          </c:otherwise>
+        </c:choose>
+      </div>
 </div>
 
 <!-- 页脚 -->

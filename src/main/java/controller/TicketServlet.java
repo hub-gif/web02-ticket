@@ -34,32 +34,66 @@ public class TicketServlet extends HttpServlet {
         }
     }
 
+    /**
+     * 显示车票搜索页面。
+     * 该方法从数据库中获取所有车站信息，将其设置到请求属性中，
+     * 然后将请求转发到 main.jsp 页面以显示车票搜索界面。
+     *
+     * @param req HttpServletRequest 对象，包含客户端请求信息
+     * @param resp HttpServletResponse 对象，用于向客户端发送响应
+     * @throws ServletException 如果在处理请求时发生 servlet 错误
+     * @throws IOException 如果在输入输出操作时发生错误
+     */
     private void showTicketSearchPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // 调用 StationDAO 的 getAllStations 方法，从数据库中获取所有车站信息
         List<Station> stations = stationDAO.getAllStations();
+        // 将获取到的车站列表设置到请求属性中，供 main.jsp 页面使用
         req.setAttribute("stations", stations);
-        req.getRequestDispatcher("/ticket_search.jsp").forward(req, resp);
+        // 转发请求到 main.jsp 页面，显示车票搜索界面
+        req.getRequestDispatcher("/main.jsp").forward(req, resp);
     }
 
+    /**
+     * 处理车票搜索请求，根据用户输入的出发站、终点站和出发日期查询车票信息。
+     * 如果用户输入信息不完整，则重定向到车票搜索页面。
+     * 查询成功后，将相关信息保存到请求属性中，并转发到 main.jsp 页面显示查询结果。
+     *
+     * @param req HttpServletRequest 对象，包含客户端请求信息
+     * @param resp HttpServletResponse 对象，用于向客户端发送响应
+     * @throws ServletException 如果在处理请求时发生 servlet 错误
+     * @throws IOException 如果在输入输出操作时发生错误
+     */
     private void searchTickets(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String startStationName = req.getParameter("startStation");
-        String endStationName = req.getParameter("endStation");
-        String dateStr = req.getParameter("departureDate");
+        // 从请求参数中获取出发站名称
+        String startStationName = req.getParameter("fromStation");
+        // 从请求参数中获取终点站名称
+        String endStationName = req.getParameter("toStation");
+        // 从请求参数中获取出发日期字符串
+        String dateStr = req.getParameter("departDate");
 
+        // 检查出发站、终点站和出发日期是否为空，如果为空则重定向到车票搜索页面
         if (startStationName == null || endStationName == null || dateStr == null) {
             resp.sendRedirect(req.getContextPath() + "/ticket");
             return;
         }
 
+        // 将日期字符串转换为 java.sql.Date 对象
         Date departureDate = Date.valueOf(dateStr);
 
-        List<Ticket> tickets = ticketDAO.searchTickets(startStationName, endStationName, departureDate);
+        // 调用 TicketDAO 的 searchTickets 方法，根据出发站、终点站和出发日期查询车票列表
+        List<Ticket> trainList = ticketDAO.searchTickets(startStationName, endStationName, departureDate);
 
+        // 将出发站名称设置到请求属性中，供后续页面使用
         req.setAttribute("startStation", startStationName);
+        // 将终点站名称设置到请求属性中，供后续页面使用
         req.setAttribute("endStation", endStationName);
+        // 将出发日期设置到请求属性中，供后续页面使用
         req.setAttribute("departureDate", departureDate);
-        req.setAttribute("tickets", tickets);
+        // 将查询到的车票列表设置到请求属性中，供后续页面使用
+        req.setAttribute("trainList", trainList);
 
-        req.getRequestDispatcher("/ticket_search_result.jsp").forward(req, resp);
+        // 转发请求到 main.jsp 页面，显示车票查询结果
+        req.getRequestDispatcher("/main.jsp").forward(req, resp);
     }
 
     private void showTicketDetail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
