@@ -16,8 +16,8 @@ public class UserDAO extends BaseDAO {
                     User u = new User();
                     u.setId(rs.getInt("id"));
                     u.setUsername(rs.getString("username"));
+                    // 明文密码直接存 password_hash 列
                     u.setPasswordHash(rs.getString("password_hash"));
-                    u.setSalt(rs.getString("salt"));
                     u.setEmail(rs.getString("email"));
                     u.setPhone(rs.getString("phone"));
                     u.setRealName(rs.getString("real_name"));
@@ -34,7 +34,7 @@ public class UserDAO extends BaseDAO {
         return null;
     }
 
-    /** 按 ID 查询用户 （供 changePassword 使用） */
+    /** 按 ID 查询用户 */
     public User getUserById(int id) {
         String sql = "SELECT * FROM users WHERE id = ?";
         try (Connection conn = getConnection();
@@ -46,7 +46,6 @@ public class UserDAO extends BaseDAO {
                     u.setId(rs.getInt("id"));
                     u.setUsername(rs.getString("username"));
                     u.setPasswordHash(rs.getString("password_hash"));
-                    u.setSalt(rs.getString("salt"));
                     u.setEmail(rs.getString("email"));
                     u.setPhone(rs.getString("phone"));
                     u.setRealName(rs.getString("real_name"));
@@ -64,23 +63,21 @@ public class UserDAO extends BaseDAO {
     }
 
     /**
-     * 注册新用户
-     * 注意：这里不做任何哈希，Servlet 里必须先调用 PasswordUtils
+     * 注册新用户（明文存密码）
      */
     public boolean registerUser(User user) {
         String sql = "INSERT INTO users "
-                + "(username, password_hash, salt, email, phone, real_name, id_number) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                + "(username, password_hash, email, phone, real_name, id_number) "
+                + "VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, user.getUsername());
-            ps.setString(2, user.getPasswordHash());  // Servlet 已经算好的 hash
-            ps.setString(3, user.getSalt());          // Servlet 已经生成的 salt
-            ps.setString(4, user.getEmail());
-            ps.setString(5, user.getPhone());
-            ps.setString(6, user.getRealName());
-            ps.setString(7, user.getIdNumber());
+            ps.setString(2, user.getPasswordHash());  // 这里直接存明文
+            ps.setString(3, user.getEmail());
+            ps.setString(4, user.getPhone());
+            ps.setString(5, user.getRealName());
+            ps.setString(6, user.getIdNumber());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -125,17 +122,15 @@ public class UserDAO extends BaseDAO {
     }
 
     /**
-     * 修改密码：只做新密码哈希和写回
-     * 旧密码校验可留在 Servlet 或也可放到这里
+     * 修改密码（纯明文存储）
      */
-    public boolean changePassword(int userId, String newHash, String newSalt) {
-        String sql = "UPDATE users SET password_hash=?, salt=? WHERE id=?";
+    public boolean changePassword(int userId, String newPlaintextPwd, String newPassword) {
+        String sql = "UPDATE users SET password_hash=? WHERE id=?";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, newHash);
-            ps.setString(2, newSalt);
-            ps.setInt(3, userId);
+            ps.setString(1, newPlaintextPwd);
+            ps.setInt(2, userId);
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();

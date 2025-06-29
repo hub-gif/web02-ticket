@@ -68,7 +68,7 @@ public class AuthServlet extends HttpServlet {
 
         User user = userDAO.getUserByUsername(username);
         if (user != null
-                && PasswordUtils.verifyPassword(password, user.getPasswordHash(), user.getSalt())) {
+                && password.equals(user.getPasswordHash())) {
             // 登录成功，保存 session 并跳转主页面
 
             HttpSession session = req.getSession(true);
