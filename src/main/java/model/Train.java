@@ -12,8 +12,8 @@ public class Train implements Serializable {
     private TrainType trainType;
     private Station startStation;
     private Station endStation;
-    private Time departureTime;
-    private Time arrivalTime;
+    private String departureTime;
+    private String arrivalTime;
     private String duration;
     private int distance;
 
@@ -33,11 +33,11 @@ public class Train implements Serializable {
     public Station getEndStation() { return endStation; }
     public void setEndStation(Station endStation) { this.endStation = endStation; }
 
-    public Time getDepartureTime() { return departureTime; }
-    public void setDepartureTime(Time departureTime) { this.departureTime = departureTime; }
+    public String getDepartureTime() { return departureTime; }
+    public void setDepartureTime(String departureTime) { this.departureTime = departureTime; }
 
-    public Time getArrivalTime() { return arrivalTime; }
-    public void setArrivalTime(Time arrivalTime) { this.arrivalTime = arrivalTime; }
+    public String getArrivalTime() { return arrivalTime; }
+    public void setArrivalTime(String arrivalTime) { this.arrivalTime = arrivalTime; }
 
     public String getDuration() { return duration; }
     public void setDuration(String duration) { this.duration = duration; }

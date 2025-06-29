@@ -13,7 +13,7 @@ public class DBConnection {
     }
 
     public static Connection getConnection() throws SQLException {
-        String url = "jdbc:mysql://10.143.49.34:3306/toudatrain?"
+        String url = "jdbc:mysql://192.168.151.241:3306/train?"
                 + "useSSL=false&"
                 + "serverTimezone=Asia/Shanghai&"
                 + "allowPublicKeyRetrieval=true&"

@@ -11,6 +11,7 @@ public class Station implements Serializable {
     private String city;
     private String province;
     private String stationCode;
+    private int stopTime;       //经停时间
 
     // Getters and Setters
     public int getId() { return id; }
@@ -27,4 +28,12 @@ public class Station implements Serializable {
 
     public String getStationCode() { return stationCode; }
     public void setStationCode(String stationCode) { this.stationCode = stationCode; }
+
+    public int getStopTime() {
+        return stopTime;
+    }
+
+    public void setStopTime(int stopTime) {
+        this.stopTime = stopTime;
+    }
 }

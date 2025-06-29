@@ -1,10 +1,12 @@
 // com.toudatrain.controller.TicketServlet.java
 package controller;
 
+import model.Checi;
 import model.Station;
 import model.Ticket;
 import model.DAO.StationDAO;
 import model.DAO.TicketDAO;
+import model.DAO.CheciDAO;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.List;
@@ -15,18 +17,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/ticket/*")
-public class TicketServlet extends HttpServlet {
-    private TicketDAO ticketDAO = new TicketDAO();
-    private StationDAO stationDAO = new StationDAO();
+    public class TicketServlet extends HttpServlet {
+        private TicketDAO ticketDAO = new TicketDAO();
+        private CheciDAO checiDAO = new CheciDAO();
+        private StationDAO stationDAO = new StationDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=UTF-8");
+
         String action = req.getPathInfo();
 
         if (action == null || action.equals("/")) {
             showTicketSearchPage(req, resp);
         } else if (action.equals("/search")) {
-            searchTickets(req, resp);
+            searchChecis(req, resp);
         } else if (action.equals("/detail")) {
             showTicketDetail(req, resp);
         } else {
@@ -34,65 +40,58 @@ public class TicketServlet extends HttpServlet {
         }
     }
 
-    /**
-     * 显示车票搜索页面。
-     * 该方法从数据库中获取所有车站信息，将其设置到请求属性中，
-     * 然后将请求转发到 main.jsp 页面以显示车票搜索界面。
-     *
-     * @param req HttpServletRequest 对象，包含客户端请求信息
-     * @param resp HttpServletResponse 对象，用于向客户端发送响应
-     * @throws ServletException 如果在处理请求时发生 servlet 错误
-     * @throws IOException 如果在输入输出操作时发生错误
-     */
     private void showTicketSearchPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 调用 StationDAO 的 getAllStations 方法，从数据库中获取所有车站信息
         List<Station> stations = stationDAO.getAllStations();
-        // 将获取到的车站列表设置到请求属性中，供 main.jsp 页面使用
         req.setAttribute("stations", stations);
-        // 转发请求到 main.jsp 页面，显示车票搜索界面
-        req.getRequestDispatcher("/main.jsp").forward(req, resp);
+        req.getRequestDispatcher("/ticket_search.jsp").forward(req, resp);
     }
 
-    /**
-     * 处理车票搜索请求，根据用户输入的出发站、终点站和出发日期查询车票信息。
-     * 如果用户输入信息不完整，则重定向到车票搜索页面。
-     * 查询成功后，将相关信息保存到请求属性中，并转发到 main.jsp 页面显示查询结果。
-     *
-     * @param req HttpServletRequest 对象，包含客户端请求信息
-     * @param resp HttpServletResponse 对象，用于向客户端发送响应
-     * @throws ServletException 如果在处理请求时发生 servlet 错误
-     * @throws IOException 如果在输入输出操作时发生错误
-     */
-    private void searchTickets(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // 从请求参数中获取出发站名称
-        String startStationName = req.getParameter("fromStation");
-        // 从请求参数中获取终点站名称
-        String endStationName = req.getParameter("toStation");
-        // 从请求参数中获取出发日期字符串
-        String dateStr = req.getParameter("departDate");
+    private void searchChecis(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+        // 获取请求参数
+        String startStationName = req.getParameter("startStation");
+        String endStationName = req.getParameter("endStation");
+        String dateStr = req.getParameter("departureDate");
 
-        // 检查出发站、终点站和出发日期是否为空，如果为空则重定向到车票搜索页面
+        // 参数校验
         if (startStationName == null || endStationName == null || dateStr == null) {
             resp.sendRedirect(req.getContextPath() + "/ticket");
             return;
         }
 
-        // 将日期字符串转换为 java.sql.Date 对象
-        Date departureDate = Date.valueOf(dateStr);
+        // 1. 查询车次链表（核心修改）
+        List<Checi> checiList = checiDAO.searchCheci(startStationName, endStationName, dateStr);
 
-        // 调用 TicketDAO 的 searchTickets 方法，根据出发站、终点站和出发日期查询车票列表
-        List<Ticket> trainList = ticketDAO.searchTickets(startStationName, endStationName, departureDate);
-
-        // 将出发站名称设置到请求属性中，供后续页面使用
+        // 2. 设置请求属性（使用车次链表）
         req.setAttribute("startStation", startStationName);
-        // 将终点站名称设置到请求属性中，供后续页面使用
         req.setAttribute("endStation", endStationName);
-        // 将出发日期设置到请求属性中，供后续页面使用
-        req.setAttribute("departureDate", departureDate);
-        // 将查询到的车票列表设置到请求属性中，供后续页面使用
-        req.setAttribute("trainList", trainList);
+        req.setAttribute("departureDate", dateStr);
+        req.setAttribute("checis", checiList); // 车次链表对象
 
-        // 转发请求到 main.jsp 页面，显示车票查询结果
+        // 3. 转发到JSP页面
+        req.getRequestDispatcher("/main.jsp").forward(req, resp);
+    }
+
+
+    private void searchTickets(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String startStationName = req.getParameter("startStation");
+        String endStationName = req.getParameter("endStation");
+        String dateStr = req.getParameter("departureDate");
+
+        if (startStationName == null || endStationName == null || dateStr == null) {
+            resp.sendRedirect(req.getContextPath() + "/ticket");
+            return;
+        }
+
+
+
+        List<Ticket> tickets = ticketDAO.searchTickets(startStationName, endStationName, dateStr);
+
+        req.setAttribute("startStation", startStationName);
+        req.setAttribute("endStation", endStationName);
+        req.setAttribute("departureDate", dateStr);
+        req.setAttribute("tickets", tickets);
+
         req.getRequestDispatcher("/main.jsp").forward(req, resp);
     }
 

@@ -7,6 +7,12 @@
         <option value="$PROJECT_DIR$/pom.xml" />
       </list>
     </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/web02-master/pom.xml" />
+        <option value="$PROJECT_DIR$/web02-master01/pom.xml" />
+      </set>
+    </option>
   </component>
   <component name="ProjectResources">
     <resource url="https://jakarta.ee/xml/ns/jakartaee" location="$PROJECT_DIR$" />

@@ -10,7 +10,6 @@
     <title>头大 - 列车票务系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* 保留原有所有CSS样式 */
         * {
             margin: 0;
             padding: 0;
@@ -386,117 +385,229 @@
         }
 
         /* 新增模态框样式 */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4);
-        }
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 1000;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    background-color: rgba(0,0,0,0.4);
+                }
 
-        .modal-content {
-            background-color: #fff;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            width: 50%;
-            max-width: 600px;
-            position: relative;
-        }
+                .modal-content {
+                    background-color: #fff;
+                    margin: 5% auto;
+                    padding: 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    width: 50%;
+                    max-width: 600px;
+                    position: relative;
+                }
 
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #777;
-        }
+                .close-modal {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    font-size: 28px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    color: #777;
+                }
 
-        .close-modal:hover {
-            color: #000;
-        }
+                .close-modal:hover {
+                    color: #000;
+                }
 
-        .modal-title {
-            margin-bottom: 20px;
-            color: #0a2463;
-            font-size: 1.5rem;
-        }
+                .modal-title {
+                    margin-bottom: 20px;
+                    color: #0a2463;
+                    font-size: 1.5rem;
+                }
 
-        .ticket-info {
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: #f0f7ff;
-            border-radius: 10px;
-        }
+                .ticket-info {
+                    margin-bottom: 20px;
+                    padding: 15px;
+                    background-color: #f0f7ff;
+                    border-radius: 10px;
+                }
 
-        .ticket-info p {
-            margin: 10px 0;
-            display: flex;
-        }
+                .ticket-info p {
+                    margin: 10px 0;
+                    display: flex;
+                }
 
-        .ticket-info strong {
-            min-width: 80px;
-            display: inline-block;
-        }
+                .ticket-info strong {
+                    min-width: 80px;
+                    display: inline-block;
+                }
 
-        .booking-form .form-group {
-            margin-bottom: 15px;
-        }
+                .booking-form .form-group {
+                    margin-bottom: 15px;
+                }
 
-        .booking-form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-            color: #555;
-        }
+                .booking-form label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-weight: 500;
+                    color: #555;
+                }
 
-        .booking-form input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
+                .booking-form input {
+                    width: 100%;
+                    padding: 12px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                }
 
-        .modal-footer {
-            display: flex;
-            justify-content: flex-end;
-            gap: 15px;
-            margin-top: 20px;
-        }
+                .modal-footer {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 15px;
+                    margin-top: 20px;
+                }
 
-        .modal-btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
+                .modal-btn {
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
 
-        .btn-cancel {
-            background-color: #e0e0e0;
-        }
+                .btn-cancel {
+                    background-color: #e0e0e0;
+                }
 
-        .btn-cancel:hover {
-            background-color: #d0d0d0;
-        }
+                .btn-cancel:hover {
+                    background-color: #d0d0d0;
+                }
 
-        .btn-book {
-            background-color: #3e92cc;
-            color: white;
-        }
+                .btn-book {
+                    background-color: #3e92cc;
+                    color: white;
+                }
 
-        .btn-book:hover {
-            background-color: #0a2463;
-        }
+                .btn-book:hover {
+                    background-color: #0a2463;
+                }
+        /* 新增模态框样式 */
+                .modal {
+                    display: none;
+                    position: fixed;
+                    z-index: 1000;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    overflow: auto;
+                    background-color: rgba(0,0,0,0.4);
+                }
+
+                .modal-content {
+                    background-color: #fff;
+                    margin: 5% auto;
+                    padding: 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                    width: 50%;
+                    max-width: 600px;
+                    position: relative;
+                }
+
+                .close-modal {
+                    position: absolute;
+                    top: 15px;
+                    right: 15px;
+                    font-size: 28px;
+                    font-weight: bold;
+                    cursor: pointer;
+                    color: #777;
+                }
+
+                .close-modal:hover {
+                    color: #000;
+                }
+
+                .modal-title {
+                    margin-bottom: 20px;
+                    color: #0a2463;
+                    font-size: 1.5rem;
+                }
+
+                .ticket-info {
+                    margin-bottom: 20px;
+                    padding: 15px;
+                    background-color: #f0f7ff;
+                    border-radius: 10px;
+                }
+
+                .ticket-info p {
+                    margin: 10px 0;
+                    display: flex;
+                }
+
+                .ticket-info strong {
+                    min-width: 80px;
+                    display: inline-block;
+                }
+
+                .booking-form .form-group {
+                    margin-bottom: 15px;
+                }
+
+                .booking-form label {
+                    display: block;
+                    margin-bottom: 5px;
+                    font-weight: 500;
+                    color: #555;
+                }
+
+                .booking-form input {
+                    width: 100%;
+                    padding: 12px;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    font-size: 1rem;
+                }
+
+                .modal-footer {
+                    display: flex;
+                    justify-content: flex-end;
+                    gap: 15px;
+                    margin-top: 20px;
+                }
+
+                .modal-btn {
+                    padding: 10px 20px;
+                    border: none;
+                    border-radius: 8px;
+                    font-weight: 500;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-cancel {
+                    background-color: #e0e0e0;
+                }
+
+                .btn-cancel:hover {
+                    background-color: #d0d0d0;
+                }
+
+                .btn-book {
+                    background-color: #3e92cc;
+                    color: white;
+                }
+
+                .btn-book:hover {
+                    background-color: #0a2463;
+                }
     </style>
 </head>
 <body>
@@ -511,22 +622,24 @@
         <ul class="nav-links">
             <li><a href="#" class="active"><i class="fas fa-home"></i> 首页</a></li>
             <li><a href="<%= request.getContextPath() %>/ticket_booking.jsp"><i class="fas fa-ticket-alt"></i> 车票预订</a></li>
-            <li><a href="<%= request.getContextPath() %>/order_management.jsp"><i class="fas fa-list"></i> 订单管理</a></li>
+           <li><a href="<%= request.getContextPath() %>/order" ><i class="fas fa-list"></i> 订单管理</a></li>
             <li><a href="<%= request.getContextPath() %>/profile.jsp"><i class="fas fa-user"></i> 个人中心</a></li>
             <li><a href="<%= request.getContextPath() %>/center.jsp"><i class="fas fa-question-circle"></i> 帮助中心</a></li>
         </ul>
 
-        <div class="user-actions">
-            <div class="notification">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">${sessionScope.notificationCount}</span>
-            </div>
-            <div class="user-profile">
-                <div class="user-avatar">${sessionScope.userInfo.username.substring(0, 1)}</div>
-                <span>${sessionScope.userInfo.username}</span>
-            </div>
-        </div>
+
+
+<div class="user-actions">
+      <div class="notification">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge">${sessionScope.notificationCount}</span>
+      </div>
+      <div class="user-profile">
+        <div class="user-avatar">${sessionScope.userInfo.username.substring(0, 1)}</div>
+        <span>${sessionScope.userInfo.username}</span>
+      </div>
     </div>
+
 </header>
 
 <!-- 主内容区域 -->
@@ -538,17 +651,17 @@
             <div class="search-form">
                 <div class="search-form-group">
                     <label for="from-station">出发站</label>
-                    <input type="text" id="from-station" name="fromStation" placeholder="请输入出发站" value="${param.fromStation}">
+                    <input type="text" id="from-station" name="startStation" placeholder="请输入出发站" value="${param.startStation}">
                 </div>
 
                 <div class="search-form-group">
                     <label for="to-station">到达站</label>
-                    <input type="text" id="to-station" name="toStation" placeholder="请输入到达站" value="${param.toStation}">
+                    <input type="text" id="to-station" name="endStation" placeholder="请输入到达站" value="${param.endStation}">
                 </div>
 
                 <div class="search-form-group">
                     <label for="depart-date">出发日期</label>
-                    <input type="date" id="depart-date" name="departDate" value="${not empty param.departDate ? param.departDate : pageContext.request.getAttribute('defaultDate')}">
+                    <input type="date" id="depart-date" name="departureDate" value="${not empty param.departureDate ? param.departureDate : pageContext.request.getAttribute('defaultDate')}">
                 </div>
             </div>
 
@@ -562,58 +675,53 @@
         </form>
     </div>
 
-    <!-- 搜索结果展示区域 -->
     <div class="search-results">
         <h2 class="section-title">查询结果</h2>
 
-        <c:choose>
-            <c:when test="${empty trainList}">
-                <div class="alert alert-info">
-                    暂无符合条件的列车信息，请调整查询条件。
-                </div>
-            </c:when>
-            <c:otherwise>
-                <div>共找到 ${fn:length(trainList)} 条车次</div>
-                <c:forEach var="ticket" items="${trainList}">
-                    <div class="result-item">
-                        <div class="result-time">
-                            出发：<c:out value="${ticket.train.departureTime}"/>
-                            到达：<c:out value="${ticket.train.arrivalTime}"/>
-                        </div>
-                        <div class="result-stations">
-                            <span class="station-name">
-                                <c:out value="${ticket.train.startStation.stationName}"/>
-                            </span>
-                            <i class="fas fa-long-arrow-alt-right"></i>
-                            <span class="station-name">
-                                <c:out value="${ticket.train.endStation.stationName}"/>
-                            </span>
-                        </div>
-                        <div class="result-duration">
-                            时长：<c:out value="${ticket.train.duration}"/>
-                        </div>
-                        <div class="result-train">
-                            车次：<c:out value="${ticket.train.trainNumber}"/>
-                        </div>
-                        <div class="result-price">
-                            票价：¥<c:out value="${ticket.basePrice * ticket.seatType.priceMultiplier}"/>
-                        </div>
-                        <button class="book-btn"
-                                onclick="openBookingModal(
-                                  '${fn:escapeXml(ticket.id)}',
-                                  '${fn:escapeXml(ticket.train.trainNumber)}',
-                                  '${fn:escapeXml(ticket.train.startStation.stationName)}',
-                                  '${fn:escapeXml(ticket.train.endStation.stationName)}',
-                                  '${fn:escapeXml(ticket.train.departureTime)}',
-                                  '${fn:escapeXml(ticket.train.arrivalTime)}',
-                                  '${fn:escapeXml(ticket.basePrice * ticket.seatType.priceMultiplier)}'
-                                )">
-                            预订
-                        </button>
+        <c:if test="${empty checis}">
+            <div class="alert alert-info">
+                暂无符合条件的列车信息，请调整查询条件。
+            </div>
+        </c:if>
+
+        <c:forEach items="${checis}" var="checi">
+            <div class="result-item">
+                <div>
+                    <div class="result-time">${checi.startTime}</div>
+                    <div class="result-stations">
+                        <span class="station-name">${checi.startStation.stationName}</span>
+                        <i class="fas fa-long-arrow-alt-right"></i>
+                        <span class="station-name">${checi.endStation.stationName}</span>
                     </div>
-                </c:forEach>
-            </c:otherwise>
-        </c:choose>
+                </div>
+
+                <!-- 修正时长计算 -->
+                <div class="result-duration">
+                    <c:set var="depart" value="${fn:substring(checi.startTime, 0, 5)}"/>
+                    <c:set var="arrive" value="${fn:substring(checi.endTime, 0, 5)}"/>
+                    ${depart} - ${arrive}
+                </div>
+
+                <div class="result-train">
+                    ${checi.id}车次  <!-- 直接使用车次ID -->
+                </div>
+
+                <div>
+                    <!-- 显示余票而非票价 -->
+                    <div class="result-price">余票：${checi.tickets}张</div>
+                    <button class="book-btn"
+                        onclick="openBookingModal(
+                            '${checi.id}',
+                            '${fn:escapeXml(checi.id)}',
+                            '${fn:escapeXml(checi.startStation.stationName)}',
+                            '${fn:escapeXml(checi.endStation.stationName)}',
+                            '${fn:escapeXml(checi.startTime)}',
+                            '${fn:escapeXml(checi.endTime)}',
+                            '${checi.tickets}'  // 传递余票数
+                        )">预订</button>
+                </div>
+            </div>
+        </c:forEach>
     </div>
 </div>
 
@@ -708,8 +816,13 @@
             </div>
 
             <div class="form-group">
-                <label for="seat-number">座位号</label>
-                <input type="text" id="seat-number" placeholder="可选，留空将自动分配座位">
+              <label for="seat-number">座位偏好</label>
+              <select id="seat-number" name="seat-number" class="form-control">
+                <option value="">自动分配座位</option>
+                <option value="window">靠窗</option>
+                <option value="aisle">靠走道</option>
+                <option value="middle">中间</option>
+              </select>
             </div>
         </div>
 
@@ -722,101 +835,101 @@
 
 <script>
     // 交换出发站和到达站
-    document.querySelector('.swap-stations').addEventListener('click', function() {
-        const fromStation = document.getElementById('from-station');
-        const toStation = document.getElementById('to-station');
-        const temp = fromStation.value;
-        fromStation.value = toStation.value;
-        toStation.value = temp;
-    });
-
-    // 初始化日期为明天
-    document.addEventListener('DOMContentLoaded', function() {
-        const dateInput = document.getElementById('depart-date');
-        if (!dateInput.value) {
-            const today = new Date();
-            const tomorrow = new Date(today);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            const formattedDate = tomorrow.toISOString().split('T')[0];
-            dateInput.value = formattedDate;
-        }
-    });
-
-    // 打开预订模态框
-    function openBookingModal(ticketId, trainNumber, fromStation, toStation, departTime, arriveTime, price) {
-        // 填充车票信息到模态框
-        document.getElementById('modal-ticket-id').value = ticketId;
-        document.getElementById('modal-train-number').textContent = trainNumber;
-        document.getElementById('modal-from-station').textContent = fromStation;
-        document.getElementById('modal-to-station').textContent = toStation;
-        document.getElementById('modal-depart-time').textContent = departTime;
-        document.getElementById('modal-arrive-time').textContent = arriveTime;
-        document.getElementById('modal-price').textContent = price;
-
-        // 清空表单
-        document.getElementById('passenger-name').value = '';
-        document.getElementById('passenger-id').value = '';
-        document.getElementById('passenger-phone').value = '';
-        document.getElementById('seat-number').value = '';
-
-        // 显示模态框
-        document.getElementById('bookingModal').style.display = 'block';
-    }
-
-    // 关闭预订模态框
-    function closeBookingModal() {
-        document.getElementById('bookingModal').style.display = 'none';
-    }
-
-    // 提交预订表单
-    function submitBooking() {
-        // 获取表单数据
-        const ticketId = document.getElementById('modal-ticket-id').value;
-        const passengerName = document.getElementById('passenger-name').value;
-        const passengerId = document.getElementById('passenger-id').value;
-        const passengerPhone = document.getElementById('passenger-phone').value;
-        const seatNumber = document.getElementById('seat-number').value;
-
-        // 简单验证
-        if (!passengerName || !passengerId || !passengerPhone) {
-            alert('请填写乘客姓名、证件号码和手机号码');
-            return;
-        }
-
-        // 发送预订请求
-        const formData = new FormData();
-        formData.append('ticketId', ticketId);
-        formData.append('passengerName', passengerName);
-        formData.append('passengerIdNumber', passengerId);
-        formData.append('passengerPhone', passengerPhone);
-        formData.append('seatNumber', seatNumber);
-
-        fetch('<%= request.getContextPath() %>/order/create', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('预订成功！订单号：' + data.orderNumber);
-                closeBookingModal();
-            } else {
-                alert('预订失败：' + (data.message || '请稍后再试'));
-            }
-        })
-        .catch(error => {
-            console.error('预订请求错误:', error);
-            alert('预订请求失败，请检查网络连接');
+        document.querySelector('.swap-stations').addEventListener('click', function() {
+            const fromStation = document.getElementById('from-station');
+            const toStation = document.getElementById('to-station');
+            const temp = fromStation.value;
+            fromStation.value = toStation.value;
+            toStation.value = temp;
         });
-    }
 
-    // 点击模态框外部关闭
-    window.onclick = function(event) {
-        const modal = document.getElementById('bookingModal');
-        if (event.target === modal) {
-            closeBookingModal();
+        // 初始化日期为明天
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.getElementById('depart-date');
+            if (!dateInput.value) {
+                const today = new Date();
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                const formattedDate = tomorrow.toISOString().split('T')[0];
+                dateInput.value = formattedDate;
+            }
+        });
+
+        // 打开预订模态框
+        function openBookingModal(ticketId, trainNumber, fromStation, toStation, departTime, arriveTime, price) {
+            // 填充车票信息到模态框
+            document.getElementById('modal-ticket-id').value = ticketId;
+            document.getElementById('modal-train-number').textContent = trainNumber;
+            document.getElementById('modal-from-station').textContent = fromStation;
+            document.getElementById('modal-to-station').textContent = toStation;
+            document.getElementById('modal-depart-time').textContent = departTime;
+            document.getElementById('modal-arrive-time').textContent = arriveTime;
+            document.getElementById('modal-price').textContent = price;
+
+            // 清空表单
+            document.getElementById('passenger-name').value = '';
+            document.getElementById('passenger-id').value = '';
+            document.getElementById('passenger-phone').value = '';
+            document.getElementById('seat-number').value = '';
+
+            // 显示模态框
+            document.getElementById('bookingModal').style.display = 'block';
         }
-    }
+
+        // 关闭预订模态框
+        function closeBookingModal() {
+            document.getElementById('bookingModal').style.display = 'none';
+        }
+
+        // 提交预订表单
+        function submitBooking() {
+            // 获取表单数据
+            const ticketId = document.getElementById('modal-ticket-id').value;
+            const passengerName = document.getElementById('passenger-name').value;
+            const passengerId = document.getElementById('passenger-id').value;
+            const passengerPhone = document.getElementById('passenger-phone').value;
+            const seatNumber = document.getElementById('seat-number').value;
+
+            // 简单验证
+            if (!passengerName || !passengerId || !passengerPhone) {
+                alert('请填写乘客姓名、证件号码和手机号码');
+                return;
+            }
+
+            // 发送预订请求
+            const formData = new FormData();
+            formData.append('ticketId', ticketId);
+            formData.append('passengerName', passengerName);
+            formData.append('passengerIdNumber', passengerId);
+            formData.append('passengerPhone', passengerPhone);
+            formData.append('seatNumber', seatNumber);
+
+            fetch('<%= request.getContextPath() %>/order/create', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('预订成功！订单号：' + data.orderNumber);
+                    closeBookingModal();
+                } else {
+                    alert('预订失败：' + (data.message || '请稍后再试'));
+                }
+            })
+            .catch(error => {
+                console.error('预订请求错误:', error);
+                alert('预订请求失败，请检查网络连接');
+            });
+        }
+
+        // 点击模态框外部关闭
+        window.onclick = function(event) {
+            const modal = document.getElementById('bookingModal');
+            if (event.target === modal) {
+                closeBookingModal();
+            }
+        }
 </script>
 </body>
 </html>

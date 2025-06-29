@@ -734,7 +734,7 @@
 
       <li><a href="<%= request.getContextPath() %>/main.jsp"><i class="fas fa-home"></i> 首页</a></li>
       <li><a href="<%= request.getContextPath() %>/ticket_booking.jsp"><i class="fas fa-ticket-alt"></i> 车票预订</a></li>
-      <li><a href="<%= request.getContextPath() %>/order_management.jsp"><i class="fas fa-list"></i> 订单管理</a></li>
+      <li><a href="<%= request.getContextPath() %>/order" ><i class="fas fa-list"></i> 订单管理</a></li>
       <li><a href="#" class="active"><i class="fas fa-user"></i> 个人中心</a></li>
        <li><a href="<%= request.getContextPath() %>/center.jsp"><i class="fas fa-question-circle"></i> 帮助中心</a></li>
 
