@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
+<c:if test="${not empty sessionScope.user}">
+  <c:set var="user" value="${sessionScope.user}" />
+
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
