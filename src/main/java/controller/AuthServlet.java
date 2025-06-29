@@ -93,40 +93,37 @@ public class AuthServlet extends HttpServlet {
 
         // 1. 密码匹配校验
         if (!password.equals(confirmPassword)) {
-            req.setAttribute("error", "两次输入的密码不匹配");
-            req.getRequestDispatcher("/index.jsp").forward(req, resp);
-            return;
+            setError(req, resp, "两次输入的密码不匹配"); return;
         }
-
         // 2. 用户名唯一性校验
         if (userDAO.getUserByUsername(username) != null) {
-            req.setAttribute("error", "用户名已存在");
-            req.getRequestDispatcher("/index.jsp").forward(req, resp);
-            return;
+            setError(req, resp, "用户名已存在"); return;
         }
 
-        // 3. 生成盐和哈希
-        String salt = PasswordUtils.generateSalt();
-        String hash = PasswordUtils.hashPassword(password, salt);
-
-        // 4. 封装用户并入库
+        // 3. 封装用户——此处不再生成 salt/hash，直接把明文密码放到 passwordHash 字段里
         User user = new User();
         user.setUsername(username);
-        user.setSalt(salt);
-        user.setPasswordHash(hash);
+        user.setPasswordHash(password); // 明文
         user.setEmail(email);
         user.setPhone(phone);
         user.setRealName(realName);
         user.setIdNumber(idNumber);
 
+        // 4. 入库
         if (userDAO.registerUser(user)) {
-            // 注册成功后重定向到登录页（GET /auth/login）
             resp.sendRedirect(req.getContextPath() + "/auth/login");
         } else {
-            req.setAttribute("error", "注册失败，请重试");
-            req.getRequestDispatcher("/index.jsp").forward(req, resp);
+            setError(req, resp, "注册失败，请重试");
         }
     }
+
+    // 辅助方法
+    private void setError(HttpServletRequest req, HttpServletResponse resp, String msg)
+            throws ServletException, IOException {
+        req.setAttribute("error", msg);
+        req.getRequestDispatcher("/index.jsp").forward(req, resp);
+    }
+
 
     private void handleLogout(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
