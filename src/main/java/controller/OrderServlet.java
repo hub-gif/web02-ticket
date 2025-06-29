@@ -46,10 +46,12 @@ public class OrderServlet extends HttpServlet {
             createOrder(req, resp);
         } else if (action.equals("/pay")) {
             confirmPayment(req, resp);
-        } else {
+        }
+        else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
+
 
     private void showOrderList(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
@@ -117,30 +119,8 @@ public class OrderServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/ticket");
             return;
         }
-
-        try {
-            int ticketId = Integer.parseInt(ticketIdStr);
-            Ticket ticket = ticketDAO.getTicketById(ticketId);
-
-            if (ticket == null) {
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-                return;
-            }
-
-            String orderNumber = orderDAO.createOrder(user, ticket, passengerName,
-                    passengerIdNumber, passengerPhone, seatNumber);
-
-            if (orderNumber != null) {
-                resp.sendRedirect(req.getContextPath() + "/order/detail?orderNumber=" + orderNumber);
-            } else {
-                // 订单创建失败，释放车票库存
-                ticketDAO.cancelTicket(ticketId, 1);
-                req.setAttribute("error", "订单创建失败，请重试");
-                req.getRequestDispatcher("/ticket_detail.jsp").forward(req, resp);
-            }
-        } catch (NumberFormatException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }
+        OrderDAO orderDAO = new OrderDAO();
+        orderDAO.createOrder(user, ticketIdStr, passengerName, passengerIdNumber, passengerPhone, seatNumber);
     }
 
     private void showOrderDetail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

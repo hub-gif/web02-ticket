@@ -1,0 +1,88 @@
+@startuml
+!theme plain
+
+class User {
+  - id: int
+  - username: String
+  - passwordHash: String
+  - email: String
+  - phone: String
+  - realName: String
+  - idNumber: String
+  - gender: String
+  - birthday: String
+  - address: String
+  - preference: String
+  __
+  + getters/setters
+}
+
+class Order {
+  - orderNumber: String
+  - status: String
+  - totalPrice: double
+  - passengerName: String
+  - passengerIdNumber: String
+  - passengerPhone: String
+  - seatNumber: String
+  __
+  + getters/setters
+}
+
+class Ticket {
+  - departureDate: Date
+  - availableSeats: int
+  - basePrice: double
+  __
+  + getActualPrice(): double
+  + getters/setters
+}
+
+class Station {
+  - stationName: String
+  - city: String
+  - province: String
+  - stationCode: String
+  __
+  + getters/setters
+}
+
+class Train {
+  - trainNumber: String
+  - departureTime: Time
+  - arrivalTime: Time
+  - duration: String
+  - distance: int
+  __
+  + getters/setters
+}
+
+class TrainType {
+  - typeName: String
+  - description: String
+  - speedLevel: int
+  __
+  + getters/setters
+}
+
+class SeatType {
+  - typeName: String
+  - description: String
+  - priceMultiplier: double
+  __
+  + getters/setters
+}
+
+' 核心关系
+User "1" -- "0..*" Order : 拥有 >
+Order "1" -- "1" Ticket : 包含 >
+Ticket "1" -- "1" Train : 属于 >
+Ticket "1" -- "1" SeatType : 指定类型 >
+Train "1" -- "1" TrainType : 分类 >
+Train "1" -- "1" Station : 起点站 >
+Train "1" -- "1" Station : 终点站 >
+
+' 计算关系
+Ticket ..> SeatType : 计算价格 >
+note right: getActualPrice() = basePrice * priceMultiplier
+@enduml

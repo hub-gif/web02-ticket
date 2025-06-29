@@ -10,6 +10,7 @@
     <title>头大 - 列车票务系统</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* 保留原有所有CSS样式 */
         * {
             margin: 0;
             padding: 0;
@@ -383,6 +384,119 @@
                 margin-top: 15px;
             }
         }
+
+        /* 新增模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 50%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .close-modal:hover {
+            color: #000;
+        }
+
+        .modal-title {
+            margin-bottom: 20px;
+            color: #0a2463;
+            font-size: 1.5rem;
+        }
+
+        .ticket-info {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #f0f7ff;
+            border-radius: 10px;
+        }
+
+        .ticket-info p {
+            margin: 10px 0;
+            display: flex;
+        }
+
+        .ticket-info strong {
+            min-width: 80px;
+            display: inline-block;
+        }
+
+        .booking-form .form-group {
+            margin-bottom: 15px;
+        }
+
+        .booking-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .booking-form input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel {
+            background-color: #e0e0e0;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d0d0d0;
+        }
+
+        .btn-book {
+            background-color: #3e92cc;
+            color: white;
+        }
+
+        .btn-book:hover {
+            background-color: #0a2463;
+        }
     </style>
 </head>
 <body>
@@ -402,19 +516,17 @@
             <li><a href="<%= request.getContextPath() %>/center.jsp"><i class="fas fa-question-circle"></i> 帮助中心</a></li>
         </ul>
 
-
-
-<div class="user-actions">
-      <div class="notification">
-        <i class="fas fa-bell"></i>
-        <span class="notification-badge">${sessionScope.notificationCount}</span>
-      </div>
-      <div class="user-profile">
-        <div class="user-avatar">${sessionScope.userInfo.username.substring(0, 1)}</div>
-        <span>${sessionScope.userInfo.username}</span>
-      </div>
+        <div class="user-actions">
+            <div class="notification">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">${sessionScope.notificationCount}</span>
+            </div>
+            <div class="user-profile">
+                <div class="user-avatar">${sessionScope.userInfo.username.substring(0, 1)}</div>
+                <span>${sessionScope.userInfo.username}</span>
+            </div>
+        </div>
     </div>
-
 </header>
 
 <!-- 主内容区域 -->
@@ -451,59 +563,58 @@
     </div>
 
     <!-- 搜索结果展示区域 -->
-    <!-- 搜索结果区 -->
-      <div class="search-results">
+    <div class="search-results">
         <h2 class="section-title">查询结果</h2>
 
         <c:choose>
-          <c:when test="${empty trainList}">
-            <div class="alert alert-info">
-              暂无符合条件的列车信息，请调整查询条件。
-            </div>
-          </c:when>
-          <c:otherwise>
-            <div>共找到 ${fn:length(trainList)} 条车次</div>
-            <c:forEach var="ticket" items="${trainList}">
-              <div class="result-item">
-                <div class="result-time">
-                  出发：<c:out value="${ticket.train.departureTime}"/>
-                  到达：<c:out value="${ticket.train.arrivalTime}"/>
+            <c:when test="${empty trainList}">
+                <div class="alert alert-info">
+                    暂无符合条件的列车信息，请调整查询条件。
                 </div>
-                <div class="result-stations">
-                  <span class="station-name">
-                    <c:out value="${ticket.train.startStation.stationName}"/>
-                  </span>
-                  <i class="fas fa-long-arrow-alt-right"></i>
-                  <span class="station-name">
-                    <c:out value="${ticket.train.endStation.stationName}"/>
-                  </span>
-                </div>
-                <div class="result-duration">
-                  时长：<c:out value="${ticket.train.duration}"/>
-                </div>
-                <div class="result-train">
-                  车次：<c:out value="${ticket.train.trainNumber}"/>
-                </div>
-                <div class="result-price">
-                  票价：¥<c:out value="${ticket.basePrice * ticket.seatType.priceMultiplier}"/>
-                </div>
-                <button class="book-btn"
-                        onclick="bookTicket(
-                          '${fn:escapeXml(ticket.id)}',
-                          '${fn:escapeXml(ticket.train.trainNumber)}',
-                          '${fn:escapeXml(ticket.train.startStation.stationName)}',
-                          '${fn:escapeXml(ticket.train.endStation.stationName)}',
-                          '${fn:escapeXml(ticket.train.departureTime)}',
-                          '${fn:escapeXml(ticket.train.arrivalTime)}',
-                          '${fn:escapeXml(ticket.basePrice * ticket.seatType.priceMultiplier)}'
-                        )">
-                  预订
-                </button>
-              </div>
-            </c:forEach>
-          </c:otherwise>
+            </c:when>
+            <c:otherwise>
+                <div>共找到 ${fn:length(trainList)} 条车次</div>
+                <c:forEach var="ticket" items="${trainList}">
+                    <div class="result-item">
+                        <div class="result-time">
+                            出发：<c:out value="${ticket.train.departureTime}"/>
+                            到达：<c:out value="${ticket.train.arrivalTime}"/>
+                        </div>
+                        <div class="result-stations">
+                            <span class="station-name">
+                                <c:out value="${ticket.train.startStation.stationName}"/>
+                            </span>
+                            <i class="fas fa-long-arrow-alt-right"></i>
+                            <span class="station-name">
+                                <c:out value="${ticket.train.endStation.stationName}"/>
+                            </span>
+                        </div>
+                        <div class="result-duration">
+                            时长：<c:out value="${ticket.train.duration}"/>
+                        </div>
+                        <div class="result-train">
+                            车次：<c:out value="${ticket.train.trainNumber}"/>
+                        </div>
+                        <div class="result-price">
+                            票价：¥<c:out value="${ticket.basePrice * ticket.seatType.priceMultiplier}"/>
+                        </div>
+                        <button class="book-btn"
+                                onclick="openBookingModal(
+                                  '${fn:escapeXml(ticket.id)}',
+                                  '${fn:escapeXml(ticket.train.trainNumber)}',
+                                  '${fn:escapeXml(ticket.train.startStation.stationName)}',
+                                  '${fn:escapeXml(ticket.train.endStation.stationName)}',
+                                  '${fn:escapeXml(ticket.train.departureTime)}',
+                                  '${fn:escapeXml(ticket.train.arrivalTime)}',
+                                  '${fn:escapeXml(ticket.basePrice * ticket.seatType.priceMultiplier)}'
+                                )">
+                            预订
+                        </button>
+                    </div>
+                </c:forEach>
+            </c:otherwise>
         </c:choose>
-      </div>
+    </div>
 </div>
 
 <!-- 页脚 -->
@@ -563,6 +674,52 @@
     </div>
 </footer>
 
+<!-- 预订模态框 -->
+<div id="bookingModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeBookingModal()">&times;</span>
+        <h2 class="modal-title">预订车票</h2>
+
+        <div class="ticket-info">
+            <p><strong>车次：</strong><span id="modal-train-number"></span></p>
+            <p><strong>出发站：</strong><span id="modal-from-station"></span></p>
+            <p><strong>到达站：</strong><span id="modal-to-station"></span></p>
+            <p><strong>出发时间：</strong><span id="modal-depart-time"></span></p>
+            <p><strong>到达时间：</strong><span id="modal-arrive-time"></span></p>
+            <p><strong>票价：</strong>¥<span id="modal-price"></span></p>
+        </div>
+
+        <div class="booking-form">
+            <input type="hidden" id="modal-ticket-id">
+
+            <div class="form-group">
+                <label for="passenger-name">乘客姓名</label>
+                <input type="text" id="passenger-name" placeholder="请输入乘客姓名" required>
+            </div>
+
+            <div class="form-group">
+                <label for="passenger-id">证件号码</label>
+                <input type="text" id="passenger-id" placeholder="请输入证件号码" required>
+            </div>
+
+            <div class="form-group">
+                <label for="passenger-phone">手机号码</label>
+                <input type="text" id="passenger-phone" placeholder="请输入手机号码" required>
+            </div>
+
+            <div class="form-group">
+                <label for="seat-number">座位号</label>
+                <input type="text" id="seat-number" placeholder="可选，留空将自动分配座位">
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="modal-btn btn-cancel" onclick="closeBookingModal()">取消</button>
+            <button type="button" class="modal-btn btn-book" onclick="submitBooking()">确认预订</button>
+        </div>
+    </div>
+</div>
+
 <script>
     // 交换出发站和到达站
     document.querySelector('.swap-stations').addEventListener('click', function() {
@@ -585,31 +742,80 @@
         }
     });
 
-    // 预订车票
-    function bookTicket(trainNumber, fromStation, toStation, departTime, arriveTime, price) {
-        // 在JavaScript中进行URL编码，而不是在EL表达式中
-        const encodedTrainNumber = encodeURIComponent(trainNumber);
-        const encodedFromStation = encodeURIComponent(fromStation);
-        const encodedToStation = encodeURIComponent(toStation);
-        const encodedDepartTime = encodeURIComponent(departTime);
-        const encodedArriveTime = encodeURIComponent(arriveTime);
-        const encodedPrice = encodeURIComponent(price);
+    // 打开预订模态框
+    function openBookingModal(ticketId, trainNumber, fromStation, toStation, departTime, arriveTime, price) {
+        // 填充车票信息到模态框
+        document.getElementById('modal-ticket-id').value = ticketId;
+        document.getElementById('modal-train-number').textContent = trainNumber;
+        document.getElementById('modal-from-station').textContent = fromStation;
+        document.getElementById('modal-to-station').textContent = toStation;
+        document.getElementById('modal-depart-time').textContent = departTime;
+        document.getElementById('modal-arrive-time').textContent = arriveTime;
+        document.getElementById('modal-price').textContent = price;
 
-        // 将车票信息保存到会话中
-        const xhr = new XMLHttpRequest();
-        xhr.open('POST', '<%= request.getContextPath() %>/selectTrain', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                // 跳转到预订页面
-                window.location.href = '<%= request.getContextPath() %>/ticket_booking.jsp';
+        // 清空表单
+        document.getElementById('passenger-name').value = '';
+        document.getElementById('passenger-id').value = '';
+        document.getElementById('passenger-phone').value = '';
+        document.getElementById('seat-number').value = '';
+
+        // 显示模态框
+        document.getElementById('bookingModal').style.display = 'block';
+    }
+
+    // 关闭预订模态框
+    function closeBookingModal() {
+        document.getElementById('bookingModal').style.display = 'none';
+    }
+
+    // 提交预订表单
+    function submitBooking() {
+        // 获取表单数据
+        const ticketId = document.getElementById('modal-ticket-id').value;
+        const passengerName = document.getElementById('passenger-name').value;
+        const passengerId = document.getElementById('passenger-id').value;
+        const passengerPhone = document.getElementById('passenger-phone').value;
+        const seatNumber = document.getElementById('seat-number').value;
+
+        // 简单验证
+        if (!passengerName || !passengerId || !passengerPhone) {
+            alert('请填写乘客姓名、证件号码和手机号码');
+            return;
+        }
+
+        // 发送预订请求
+        const formData = new FormData();
+        formData.append('ticketId', ticketId);
+        formData.append('passengerName', passengerName);
+        formData.append('passengerIdNumber', passengerId);
+        formData.append('passengerPhone', passengerPhone);
+        formData.append('seatNumber', seatNumber);
+
+        fetch('<%= request.getContextPath() %>/order/create', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('预订成功！订单号：' + data.orderNumber);
+                closeBookingModal();
             } else {
-                alert('预订失败，请稍后再试');
+                alert('预订失败：' + (data.message || '请稍后再试'));
             }
-        };
+        })
+        .catch(error => {
+            console.error('预订请求错误:', error);
+            alert('预订请求失败，请检查网络连接');
+        });
+    }
 
-        const params = `trainNumber=${encodedTrainNumber}&fromStation=${encodedFromStation}&toStation=${encodedToStation}&departTime=${encodedDepartTime}&arriveTime=${encodedArriveTime}&price=${encodedPrice}`;
-        xhr.send(params);
+    // 点击模态框外部关闭
+    window.onclick = function(event) {
+        const modal = document.getElementById('bookingModal');
+        if (event.target === modal) {
+            closeBookingModal();
+        }
     }
 </script>
 </body>

@@ -1,0 +1,45 @@
+@startuml
+!theme plain
+
+actor 用户 as User
+participant "OrderServlet" as Order
+participant "OrderDAO" as OrderDAO
+database "MySQL" as DB
+
+User -> Order: 提交支付(订单号, 支付方式)
+activate Order
+
+Order -> OrderDAO: payOrder(订单号, 支付方式)
+activate OrderDAO
+
+OrderDAO -> DB: 更新订单状态为"已支付"
+DB --> OrderDAO: 更新结果
+
+OrderDAO -> DB: 记录支付时间和方式
+DB --> OrderDAO: 操作结果
+deactivate OrderDAO
+
+alt 支付成功
+    Order --> User: 显示支付成功
+    Order -> TicketDAO: 更新车票状态
+    activate TicketDAO
+    TicketDAO -> DB: 确认库存扣除
+    DB --> TicketDAO: 操作结果
+    deactivate TicketDAO
+else 支付失败
+    Order -> OrderDAO: cancelOrder(订单号)
+    activate OrderDAO
+    OrderDAO -> DB: 更新订单状态为"已取消"
+    DB --> OrderDAO: 操作结果
+    deactivate OrderDAO
+
+    Order -> TicketDAO: cancelTicket(车票ID, 数量)
+    activate TicketDAO
+    TicketDAO -> DB: 释放库存(增加可用座位)
+    DB --> TicketDAO: 操作结果
+    deactivate TicketDAO
+
+    Order --> User: 显示支付失败
+end
+deactivate Order
+@enduml

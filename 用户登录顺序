@@ -1,0 +1,35 @@
+@startuml
+!theme plain
+
+actor 用户 as User
+participant "AuthServlet" as Auth
+participant "UserDAO" as UserDAO
+database "MySQL" as DB
+
+User -> Auth: 提交登录表单(用户名/密码)
+activate Auth
+
+Auth -> UserDAO: getUserByUsername(用户名)
+activate UserDAO
+
+UserDAO -> DB: 查询用户信息
+activate DB
+DB --> UserDAO: 返回用户数据
+deactivate DB
+
+UserDAO -> PasswordUtils: verifyPassword(密码, 存储哈希, 盐)
+activate PasswordUtils
+PasswordUtils --> UserDAO: 验证结果
+deactivate PasswordUtils
+
+UserDAO --> Auth: 返回用户对象
+deactivate UserDAO
+
+alt 验证成功
+    Auth -> HttpSession: setAttribute("user", 用户)
+    Auth --> User: 重定向到主页面
+else 验证失败
+    Auth --> User: 返回错误信息
+end
+deactivate Auth
+@enduml

@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.UUID;
 
 public class OrderDAO extends BaseDAO {
-    public String createOrder(User user, Ticket ticket, String passengerName,
+    public String createOrder(User user, String ticket, String passengerName,
                               String passengerIdNumber, String passengerPhone, String seatNumber) {
         String orderNumber = generateOrderNumber();
-        double totalPrice = ticket.getActualPrice();
+
 
         String sql = "INSERT INTO orders (user_id, ticket_id, order_number, status, " +
                 "total_price, passenger_name, passenger_id_number, passenger_phone, seat_number) " +
@@ -25,10 +25,10 @@ public class OrderDAO extends BaseDAO {
             conn = getConnection();
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, user.getId());
-            pstmt.setInt(2, ticket.getId());
+            pstmt.setInt(2, 2);
             pstmt.setString(3, orderNumber);
             pstmt.setString(4, "未支付");
-            pstmt.setDouble(5, totalPrice);
+            pstmt.setDouble(5, 20);
             pstmt.setString(6, passengerName);
             pstmt.setString(7, passengerIdNumber);
             pstmt.setString(8, passengerPhone);

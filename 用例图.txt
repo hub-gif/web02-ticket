@@ -1,0 +1,46 @@
+@startuml 列车票务系统用例图
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor 乘客 as Passenger
+
+actor 系统管理员 as Admin
+
+
+rectangle "乘客功能区" {
+  (查询车次信息) as Search
+  (管理订单) as OrderMgmt
+  (购买车票) as Book
+  (退票) as Cancel
+  (管理用户账户) as ManageAccount
+  (查看订单) as ViewOrders
+
+  Passenger --> Search
+
+  Passenger --> ManageAccount
+  Passenger --> ViewOrders
+  Passenger --> OrderMgmt
+}
+
+
+
+rectangle "管理员功能区" {
+  (管理车次信息) as ManageSchedule
+  (管理票价规则) as ManagePricing
+  (生成报表) as GenerateReports
+
+  Admin --> ManageSchedule
+  Admin --> ManagePricing
+  Admin --> GenerateReports
+}
+
+
+
+' 功能关联
+
+OrderMgmt --> Book : <<extend>>
+OrderMgmt --> Cancel : <<extend>>
+
+@enduml

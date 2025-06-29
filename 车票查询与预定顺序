@@ -1,0 +1,66 @@
+@startuml
+!theme plain
+
+actor 用户 as User
+participant "TicketServlet" as Ticket
+participant "StationDAO" as StationDAO
+participant "TicketDAO" as TicketDAO
+participant "OrderServlet" as Order
+database "MySQL" as DB
+
+User -> Ticket: 提交查询(出发站, 到达站, 日期)
+activate Ticket
+
+Ticket -> StationDAO: getStationByName(出发站)
+activate StationDAO
+StationDAO -> DB: 查询车站ID
+DB --> StationDAO: 返回车站对象
+deactivate StationDAO
+
+Ticket -> StationDAO: getStationByName(到达站)
+activate StationDAO
+StationDAO -> DB: 查询车站ID
+DB --> StationDAO: 返回车站对象
+deactivate StationDAO
+
+Ticket -> TicketDAO: searchTickets(出发站, 到达站, 日期)
+activate TicketDAO
+TicketDAO -> DB: 查询可用车票
+DB --> TicketDAO: 返回车票列表
+deactivate TicketDAO
+
+Ticket --> User: 显示车票列表
+deactivate Ticket
+
+User -> Ticket: 选择车票并预订
+activate Ticket
+
+Ticket -> TicketDAO: getTicketById(车票ID)
+activate TicketDAO
+TicketDAO -> DB: 查询车票详情
+DB --> TicketDAO: 返回车票对象
+deactivate TicketDAO
+
+Ticket -> TicketDAO: bookTicket(车票ID, 数量)
+activate TicketDAO
+TicketDAO -> DB: 锁定库存(减少可用座位)
+DB --> TicketDAO: 操作结果
+deactivate TicketDAO
+
+alt 锁定成功
+    Ticket -> Order: 创建订单(车票信息, 乘客信息)
+    activate Order
+    Order -> OrderDAO: createOrder(用户, 车票, 乘客信息)
+    activate OrderDAO
+    OrderDAO -> DB: 插入订单记录
+    DB --> OrderDAO: 返回订单号
+    deactivate OrderDAO
+    Order --> Ticket: 返回订单号
+    deactivate Order
+    
+    Ticket --> User: 重定向到支付页面
+else 锁定失败
+    Ticket --> User: 显示"车票已售罄"
+end
+deactivate Ticket
+@enduml
