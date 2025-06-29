@@ -637,21 +637,21 @@
     </div>
 
     <ul class="nav-links">
-      <li><a href="main.jsp"><i class="fas fa-home"></i> 首页</a></li>
-      <li><a href="#" class="active"><i class="fas fa-ticket-alt"></i> 车票预订</a></li>
-      <li><a href="order_management.jsp"><i class="fas fa-list"></i> 订单管理</a></li>
-      <li><a href="profile.jsp"><i class="fas fa-user"></i> 个人中心</a></li>
-      <li><a href="center.html"><i class="fas fa-question-circle"></i> 帮助中心</a></li>
+            <li><a href="<%= request.getContextPath() %>/main.jsp"><i class="fas fa-home"></i> 首页</a></li>
+            <li><a href="#" class="active"><i class="fas fa-ticket-alt"></i> 车票预订</a></li>
+            <li><a href="<%= request.getContextPath() %>/order_management.jsp"><i class="fas fa-list"></i> 订单管理</a></li>
+            <li><a href="<%= request.getContextPath() %>/profile.jsp"><i class="fas fa-user"></i> 个人中心</a></li>
+            <li><a href="<%= request.getContextPath() %>/center.jsp"><i class="fas fa-question-circle"></i> 帮助中心</a></li>
     </ul>
 
     <div class="user-actions">
       <div class="notification">
         <i class="fas fa-bell"></i>
-        <span class="notification-badge">3</span>
+        <span class="notification-badge">${sessionScope.notificationCount}</span>
       </div>
       <div class="user-profile">
-        <div class="user-avatar">张</div>
-        <span>张三</span>
+        <div class="user-avatar">${sessionScope.userInfo.username.substring(0, 1)}</div>
+        <span>${sessionScope.userInfo.username}</span>
       </div>
     </div>
   </div>

@@ -404,17 +404,17 @@
 
 
 
-        <div class="user-actions">
-              <div class="notification">
-                <i class="fas fa-bell"></i>
-                <span class="notification-badge">3</span>
-              </div>
-              <div class="user-profile">
-                <div class="user-avatar">张</div>
-                <span>张三</span>
-              </div>
-            </div>
+<div class="user-actions">
+      <div class="notification">
+        <i class="fas fa-bell"></i>
+        <span class="notification-badge">${sessionScope.notificationCount}</span>
+      </div>
+      <div class="user-profile">
+        <div class="user-avatar">${sessionScope.userInfo.username.substring(0, 1)}</div>
+        <span>${sessionScope.userInfo.username}</span>
+      </div>
     </div>
+
 </header>
 
 <!-- 主内容区域 -->
