@@ -11,7 +11,7 @@
  Target Server Version : 80037
  File Encoding         : 65001
 
- Date: 28/06/2025 22:52:47
+ Date: 29/06/2025 21:31:16
 */
 
 SET NAMES utf8mb4;
@@ -175,8 +175,15 @@ CREATE TABLE `users`  (
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES (10, 'user001', '5e884898da28047151d0e56f8dc6292', 'salt_001', 'user001@test.com', '13800138001', '用户一', '110101190001010002', NULL, '2025-06-28 22:50:35', '2025-06-28 22:50:35');
-INSERT INTO `users` VALUES (11, 'user002', 'c20ad4d76fe97759aa27a0c99bff671', 'salt_002', 'user002@test.com', '13800138002', '用户二', '110101190001010003', NULL, '2025-06-28 22:50:35', '2025-06-28 22:50:35');
-INSERT INTO `users` VALUES (12, 'user003', 'a81b2852b3e6b9dd2c1d4894a470f37', 'salt_003', 'user003@test.com', '13800138003', '用户三', '110101190001010004', NULL, '2025-06-28 22:50:35', '2025-06-28 22:50:35');
+INSERT INTO `users` VALUES (10, 'user001', '123456', 'salt_001', 'user001@test.com', '13800138001', '用户一', '110101190001010002', NULL, '2025-06-28 22:50:35', '2025-06-28 22:56:05');
+INSERT INTO `users` VALUES (11, 'user002', '123456', 'salt_002', 'user002@test.com', '13800138002', '用户二', '110101190001010003', NULL, '2025-06-28 22:50:35', '2025-06-28 22:56:08');
+INSERT INTO `users` VALUES (12, 'user003', '123456', 'salt_003', 'user003@test.com', '13800138003', '用户三', '110101190001010004', NULL, '2025-06-28 22:50:35', '2025-06-28 22:56:13');
+INSERT INTO `users` VALUES (16, 'user004', '123456', 'salt_004', 'user004@test.com', '13800138004', '赵六', '340000199304040004', 'https://example.com/avatar/4.jpg', '2025-06-28 22:55:02', '2025-06-28 22:56:18');
+INSERT INTO `users` VALUES (17, 'user005', '123456', 'salt_005', 'user005@test.com', '13800138005', '孙七', '350000199405050005', NULL, '2025-06-28 22:55:02', '2025-06-28 22:56:22');
+INSERT INTO `users` VALUES (18, 'admin001', '123456', 'salt_admin', 'admin@system.com', '13800138000', '系统管理员', '110000190001010000', 'https://example.com/avatar/admin.jpg', '2025-06-28 22:55:02', '2025-06-28 22:56:26');
+INSERT INTO `users` VALUES (19, 'student001', '123456', 'salt_stu', 'stu@school.com', '13800138007', '李同学', '410000200509010007', NULL, '2025-06-28 22:55:02', '2025-06-28 22:56:34');
+INSERT INTO `users` VALUES (20, 'teacher001', '123456', 'salt_tea', 'tea@school.com', '13800138008', '王老师', '420000198508150008', 'https://example.com/avatar/teacher.jpg', '2025-06-28 22:55:02', '2025-06-28 22:56:43');
+INSERT INTO `users` VALUES (21, '12', 'GmDlr5X09Rp9P0uhYKgtpCbIl78fQwcfS8umJ6aqelU=', 'HOY2nULiMNjld2Vsf7TJTw==', '', '', '', '', NULL, '2025-06-29 12:28:49', '2025-06-29 14:35:14');
+INSERT INTO `users` VALUES (23, 'ak', 'KsyoQkcDLVael83pwt53f2UH3huSw/NiEgazK4u0EVo=', 'IjCIxsOxMXAYuPNxrI/XhQ==', '9999999@qq.com', '12345678901', NULL, NULL, NULL, '2025-06-29 13:49:48', '2025-06-29 13:49:48');
 
 SET FOREIGN_KEY_CHECKS = 1;

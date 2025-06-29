@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -131,6 +130,7 @@
             display: flex;
             margin-bottom: 30px;
             border-bottom: 2px solid #eee;
+            position: relative;
         }
 
         .tab {
@@ -147,28 +147,27 @@
             color: #0a2463;
         }
 
-        .tab.active::after {
-            content: "";
+        .tab-slider {
             position: absolute;
             bottom: -2px;
-            left: 0;
-            width: 100%;
             height: 3px;
             background: #0a2463;
+            border-radius: 3px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 1;
         }
 
         .form {
             display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
         .form.active {
             display: block;
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .form-title {
@@ -412,6 +411,7 @@
             <div class="tabs">
                 <div class="tab active" data-tab="login">登录</div>
                 <div class="tab" data-tab="register">注册</div>
+                <div class="tab-slider"></div>
             </div>
 
             <!-- 登录表单 -->
@@ -519,59 +519,60 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const tabs = document.querySelectorAll('.tab');
-        const forms = document.querySelectorAll('.form');
+        // 获取DOM元素
+        const loginTab = document.querySelector('.tab[data-tab="login"]');
+        const registerTab = document.querySelector('.tab[data-tab="register"]');
+        const tabSlider = document.querySelector('.tab-slider');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
         const switchToRegister = document.querySelector('.switch-to-register');
         const switchToLogin = document.querySelector('.switch-to-login');
 
+        // 初始标签位置
+        updateTabSlider(loginTab);
+
         // 标签切换功能
-        tabs.forEach(tab => {
-            tab.addEventListener('click', function() {
-                const tabId = this.getAttribute('data-tab');
+        function switchForm(tab) {
+            // 更新标签状态
+            loginTab.classList.remove('active');
+            registerTab.classList.remove('active');
+            tab.classList.add('active');
 
-                // 更新标签状态
-                tabs.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
+            // 更新标签滑块位置
+            updateTabSlider(tab);
 
-                // 更新表单状态
-                forms.forEach(form => {
-                    form.classList.remove('active');
-                    if (form.id === `${tabId}-form`) {
-                        form.classList.add('active');
-                    }
-                });
-            });
-        });
+            // 更新表单状态
+            if (tab === loginTab) {
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            } else {
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+            }
+        }
 
-        // 切换到注册表单
-        switchToRegister.addEventListener('click', function(e) {
+        function updateTabSlider(tab) {
+            const tabRect = tab.getBoundingClientRect();
+            const containerRect = tab.parentElement.getBoundingClientRect();
+
+            tabSlider.style.width = `${tabRect.width}px`;
+            tabSlider.style.left = `${tabRect.left - containerRect.left}px`;
+        }
+
+        // 标签点击事件
+        loginTab.addEventListener('click', () => switchForm(loginTab));
+        registerTab.addEventListener('click', () => switchForm(registerTab));
+
+        // 链接点击事件
+        switchToRegister.addEventListener('click', (e) => {
             e.preventDefault();
-            tabs.forEach(t => t.classList.remove('active'));
-            document.querySelector('.tab[data-tab="register"]').classList.add('active');
-
-            forms.forEach(form => {
-                form.classList.remove('active');
-                if (form.id === 'register-form') {
-                    form.classList.add('active');
-                }
-            });
+            switchForm(registerTab);
         });
 
-        // 切换到登录表单
-        switchToLogin.addEventListener('click', function(e) {
+        switchToLogin.addEventListener('click', (e) => {
             e.preventDefault();
-            tabs.forEach(t => t.classList.remove('active'));
-            document.querySelector('.tab[data-tab="login"]').classList.add('active');
-
-            forms.forEach(form => {
-                form.classList.remove('active');
-                if (form.id === 'login-form') {
-                    form.classList.add('active');
-                }
-            });
+            switchForm(loginTab);
         });
-
-        // 移除AJAX提交逻辑，表单将自然提交到服务器
     });
 </script>
 </body>
