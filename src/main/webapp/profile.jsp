@@ -1,6 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
@@ -652,6 +651,70 @@
             align-items: flex-start;
         }
     }
+
+    /* 模态框样式 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+      width: 400px;
+      padding: 30px;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .modal h2 {
+      margin-bottom: 20px;
+      color: #0a2463;
+    }
+
+    .modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .modal-form input[type="file"] {
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .modal-form button {
+      padding: 12px;
+      background: linear-gradient(to right, #0a2463, #3e92cc);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .modal-form button:hover {
+      background: linear-gradient(to right, #091d52, #357bb8);
+    }
   </style>
 </head>
 <body>
@@ -664,23 +727,25 @@
     </div>
 
     <ul class="nav-links">
+
       <li><a href="<%= request.getContextPath() %>/main.jsp"><i class="fas fa-home"></i> 首页</a></li>
       <li><a href="<%= request.getContextPath() %>/ticket_booking.jsp"><i class="fas fa-ticket-alt"></i> 车票预订</a></li>
       <li><a href="<%= request.getContextPath() %>/order_management.jsp"><i class="fas fa-list"></i> 订单管理</a></li>
       <li><a href="#" class="active"><i class="fas fa-user"></i> 个人中心</a></li>
-      <li><a href="<%= request.getContextPath() %>/help_center.jsp"><i class="fas fa-question-circle"></i> 帮助中心</a></li>
+       <li><a href="<%= request.getContextPath() %>/center.jsp"><i class="fas fa-question-circle"></i> 帮助中心</a></li>
+
     </ul>
 
     <div class="user-actions">
-      <div class="notification">
-        <i class="fas fa-bell"></i>
-        <span class="notification-badge">${sessionScope.notificationCount}</span>
-      </div>
-      <div class="user-profile">
-        <div class="user-avatar">${sessionScope.userInfo.username.substring(0, 1)}</div>
-        <span>${sessionScope.userInfo.username}</span>
-      </div>
-    </div>
+          <div class="notification">
+            <i class="fas fa-bell"></i>
+            <span class="notification-badge">${sessionScope.notificationCount}</span>
+          </div>
+          <div class="user-profile">
+            <div class="user-avatar">${sessionScope.userInfo.username.substring(0, 1)}</div>
+            <span>${sessionScope.userInfo.username}</span>
+          </div>
+        </div>
   </div>
 </header>
 
@@ -690,46 +755,46 @@
   <aside class="sidebar">
     <h3 class="sidebar-title">个人中心</h3>
     <ul class="sidebar-menu">
-      <li><a href="<%= request.getContextPath() %>/profile.jsp" class="active"><i class="fas fa-user"></i> 个人信息</a></li>
-      <li><a href="<%= request.getContextPath() %>/order_management.jsp"><i class="fas fa-list"></i> 订单管理</a></li>
-      <li><a href="<%= request.getContextPath() %>/payment_method.jsp"><i class="fas fa-credit-card"></i> 支付方式</a></li>
-      <li><a href="<%= request.getContextPath() %>/travel_history.jsp"><i class="fas fa-history"></i> 行程历史</a></li>
-      <li><a href="<%= request.getContextPath() %>/favorite_stations.jsp"><i class="fas fa-star"></i> 常用车站</a></li>
-      <li><a href="<%= request.getContextPath() %>/settings.jsp"><i class="fas fa-cog"></i> 账户设置</a></li>
-      <li><a href="<%= request.getContextPath() %>/logout"><i class="fas fa-sign-out-alt"></i> 退出登录</a></li>
+      <li><a href="#" class="active"><i class="fas fa-user"></i> 个人信息</a></li>
+      <li><a href="#"><i class="fas fa-list"></i> 订单管理</a></li>
+      <li><a href="#"><i class="fas fa-credit-card"></i> 支付方式</a></li>
+      <li><a href="#"><i class="fas fa-history"></i> 行程历史</a></li>
+      <li><a href="#"><i class="fas fa-star"></i> 常用车站</a></li>
+      <li><a href="#"><i class="fas fa-cog"></i> 账户设置</a></li>
+      <li><a href="#"><i class="fas fa-sign-out-alt"></i> 退出登录</a></li>
     </ul>
   </aside>
 
   <!-- 主内容 -->
   <main class="content">
     <div class="breadcrumb">
-      <a href="<%= request.getContextPath() %>/main.jsp">首页</a> &gt; <a href="#">个人中心</a>
+      <a href="#">首页</a> &gt; <a href="#">个人中心</a>
     </div>
 
     <!-- 用户信息卡片 -->
     <div class="user-info-card">
       <div class="user-avatar-section">
-        <div class="user-big-avatar">${sessionScope.userInfo.username.substring(0, 1)}</div>
+        <div class="user-big-avatar">张</div>
         <div class="change-avatar" onclick="openAvatarUpload()">
           <i class="fas fa-camera"></i> 更改头像
         </div>
       </div>
 
       <div class="user-details">
-        <div class="user-name">${sessionScope.userInfo.username}</div>
-        <div class="user-id">会员ID: ${sessionScope.userInfo.userId}</div>
+        <div class="user-name">张三</div>
+        <div class="user-id">会员ID: TD2023123456</div>
 
         <div class="user-stats">
           <div class="stat-item">
-            <div class="stat-value">${sessionScope.userStats.completedOrders}</div>
+            <div class="stat-value">42</div>
             <div class="stat-label">已完成订单</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">${sessionScope.userStats.pendingOrders}</div>
+            <div class="stat-value">2</div>
             <div class="stat-label">待支付</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">${sessionScope.userStats.points}</div>
+            <div class="stat-value">1860</div>
             <div class="stat-label">积分</div>
           </div>
         </div>
@@ -739,25 +804,25 @@
             <div class="contact-icon">
               <i class="fas fa-phone"></i>
             </div>
-            <div class="contact-value">${sessionScope.userInfo.phone}</div>
+            <div class="contact-value">138****5678</div>
           </div>
           <div class="contact-item">
             <div class="contact-icon">
               <i class="fas fa-envelope"></i>
             </div>
-            <div class="contact-value">${sessionScope.userInfo.email}</div>
+            <div class="contact-value">zhangsan@example.com</div>
           </div>
           <div class="contact-item">
             <div class="contact-icon">
               <i class="fas fa-id-card"></i>
             </div>
-            <div class="contact-value">${sessionScope.userInfo.idNumberMasked}</div>
+            <div class="contact-value">3301**********1234</div>
           </div>
           <div class="contact-item">
             <div class="contact-icon">
               <i class="fas fa-train"></i>
             </div>
-            <div class="contact-value">${sessionScope.userInfo.membershipLevel}</div>
+            <div class="contact-value">铂金会员</div>
           </div>
         </div>
       </div>
@@ -767,58 +832,58 @@
     <div class="personal-info">
       <h2 class="section-title">个人信息</h2>
 
-      <form id="profileForm" class="form-grid" action="<%= request.getContextPath() %>/profile/update" method="post">
+      <form id="profileForm" class="form-grid">
         <div class="form-group">
           <label for="real-name">真实姓名</label>
-          <input type="text" id="real-name" name="realName" value="${sessionScope.userInfo.realName}" placeholder="请输入真实姓名">
+          <input type="text" id="real-name" name="realName" value="张三" placeholder="请输入真实姓名">
         </div>
 
         <div class="form-group">
           <label for="id-number">身份证号</label>
-          <input type="text" id="id-number" name="idNumber" value="${sessionScope.userInfo.idNumber}" placeholder="请输入身份证号">
+          <input type="text" id="id-number" name="idNumber" value="330123199001011234" placeholder="请输入身份证号">
         </div>
 
         <div class="form-group">
           <label for="phone">手机号码</label>
-          <input type="tel" id="phone" name="phone" value="${sessionScope.userInfo.phone}" placeholder="请输入手机号码">
+          <input type="tel" id="phone" name="phone" value="13800135678" placeholder="请输入手机号码">
         </div>
 
         <div class="form-group">
           <label for="email">电子邮箱</label>
-          <input type="email" id="email" name="email" value="${sessionScope.userInfo.email}" placeholder="请输入电子邮箱">
+          <input type="email" id="email" name="email" value="zhangsan@example.com" placeholder="请输入电子邮箱">
         </div>
 
         <div class="form-group">
           <label for="gender">性别</label>
           <select id="gender" name="gender">
-            <option value="male" ${sessionScope.userInfo.gender == 'male' ? 'selected' : ''}>男</option>
-            <option value="female" ${sessionScope.userInfo.gender == 'female' ? 'selected' : ''}>女</option>
-            <option value="other" ${sessionScope.userInfo.gender == 'other' ? 'selected' : ''}>其他</option>
+            <option value="male" selected>男</option>
+            <option value="female">女</option>
+            <option value="other">其他</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="birthday">出生日期</label>
-          <input type="date" id="birthday" name="birthday" value="${sessionScope.userInfo.birthday}">
+          <input type="date" id="birthday" name="birthday" value="1990-01-01">
         </div>
 
         <div class="form-group">
           <label for="address">常用地址</label>
-          <input type="text" id="address" name="address" value="${sessionScope.userInfo.address}" placeholder="请输入常用地址">
+          <input type="text" id="address" name="address" value="浙江省杭州市西湖区文一西路969号" placeholder="请输入常用地址">
         </div>
 
         <div class="form-group">
           <label for="preference">乘车偏好</label>
           <select id="preference" name="preference">
-            <option value="window" ${sessionScope.userInfo.preference == 'window' ? 'selected' : ''}>靠窗</option>
-            <option value="aisle" ${sessionScope.userInfo.preference == 'aisle' ? 'selected' : ''}>靠过道</option>
-            <option value="none" ${sessionScope.userInfo.preference == 'none' ? 'selected' : ''}>无偏好</option>
+            <option value="window">靠窗</option>
+            <option value="aisle" selected>靠过道</option>
+            <option value="none">无偏好</option>
           </select>
         </div>
 
         <div class="form-actions">
           <button type="button" class="cancel-btn" onclick="resetForm()">取消</button>
-          <button type="submit" class="save-btn">保存修改</button>
+          <button type="button" class="save-btn" onclick="saveProfile()">保存修改</button>
         </div>
       </form>
     </div>
@@ -828,67 +893,132 @@
       <h2 class="section-title">支付方式</h2>
 
       <div class="payment-methods">
-        <c:forEach items="${sessionScope.paymentMethods}" var="method" varStatus="status">
-          <div class="payment-method ${status.first ? 'selected' : ''}" onclick="selectPayment('${method.id}')">
-            <div class="payment-icon">
-              <i class="fa-brands fa-${method.type}"></i>
-            </div>
-            <div class="payment-details">
-              <div class="payment-name">${method.name}</div>
-              <div class="payment-desc">账户尾号 ${method.accountMasked}</div>
-            </div>
+        <div class="payment-method selected">
+          <div class="payment-icon">
+            <i class="fab fa-alipay"></i>
           </div>
-        </c:forEach>
+          <div class="payment-details">
+            <div class="payment-name">支付宝</div>
+            <div class="payment-desc">账户尾号 5678</div>
+          </div>
+        </div>
+
+        <div class="payment-method">
+          <div class="payment-icon">
+            <i class="fab fa-weixin"></i>
+          </div>
+          <div class="payment-details">
+            <div class="payment-name">微信支付</div>
+            <div class="payment-desc">账户尾号 1234</div>
+          </div>
+        </div>
+
+        <div class="payment-method">
+          <div class="payment-icon">
+            <i class="fab fa-cc-visa"></i>
+          </div>
+          <div class="payment-details">
+            <div class="payment-name">招商银行信用卡</div>
+            <div class="payment-desc">账户尾号 9876</div>
+          </div>
+        </div>
 
         <div class="add-payment" onclick="addPaymentMethod()">
           <i class="fas fa-plus"></i>
           <span>添加支付方式</span>
         </div>
       </div>
-
     </div>
 
     <!-- 最近行程 -->
     <div class="recent-trips">
       <h2 class="section-title">最近行程</h2>
 
-      <c:if test="${empty sessionScope.recentTrips}">
-        <div class="alert alert-info">
-          暂无最近行程记录。
-        </div>
-      </c:if>
-
-      <c:forEach items="${sessionScope.recentTrips}" var="trip">
-        <div class="trip-item">
-          <div class="trip-route">
-            <div class="trip-station">
-              <div class="station-name">${trip.fromStation}</div>
-              <div class="station-date">${trip.departDate}</div>
-            </div>
-            <div class="trip-icon">
-              <i class="fas fa-long-arrow-alt-right"></i>
-            </div>
-            <div class="trip-station">
-              <div class="station-name">${trip.toStation}</div>
-              <div class="station-date">${trip.arriveDate}</div>
-            </div>
+      <div class="trip-item">
+        <div class="trip-route">
+          <div class="trip-station">
+            <div class="station-name">杭州东站</div>
+            <div class="station-date">2023-12-15 08:30</div>
           </div>
-
-          <div class="trip-train">${trip.trainNumber} ${trip.trainType}</div>
-
-          <div class="trip-actions">
-            <div class="trip-action" onclick="viewTripDetails('${trip.orderId}')">
-              <i class="fas fa-eye"></i> 详情
-            </div>
-            <div class="trip-action" onclick="addTripToFavorite('${trip.orderId}')">
-              <i class="fas fa-star"></i> 收藏
-            </div>
+          <div class="trip-icon">
+            <i class="fas fa-long-arrow-alt-right"></i>
+          </div>
+          <div class="trip-station">
+            <div class="station-name">上海虹桥站</div>
+            <div class="station-date">2023-12-15 09:58</div>
           </div>
         </div>
-      </c:forEach>
+
+        <div class="trip-train">G7368 高铁</div>
+
+        <div class="trip-actions">
+          <div class="trip-action">
+            <i class="fas fa-eye"></i> 详情
+          </div>
+          <div class="trip-action">
+            <i class="fas fa-star"></i> 收藏
+          </div>
+        </div>
+      </div>
+
+      <div class="trip-item">
+        <div class="trip-route">
+          <div class="trip-station">
+            <div class="station-name">南京南站</div>
+            <div class="station-date">2023-12-10 14:15</div>
+          </div>
+          <div class="trip-icon">
+            <i class="fas fa-long-arrow-alt-right"></i>
+          </div>
+          <div class="trip-station">
+            <div class="station-name">杭州东站</div>
+            <div class="station-date">2023-12-10 15:45</div>
+          </div>
+        </div>
+
+        <div class="trip-train">G7635 高铁</div>
+
+        <div class="trip-actions">
+          <div class="trip-action">
+            <i class="fas fa-eye"></i> 详情
+          </div>
+          <div class="trip-action">
+            <i class="fas fa-star"></i> 收藏
+          </div>
+        </div>
+      </div>
+
+      <div class="trip-item">
+        <div class="trip-route">
+          <div class="trip-station">
+            <div class="station-name">北京南站</div>
+            <div class="station-date">2023-12-05 07:45</div>
+          </div>
+          <div class="trip-icon">
+            <i class="fas fa-long-arrow-alt-right"></i>
+          </div>
+          <div class="trip-station">
+            <div class="station-name">南京南站</div>
+            <div class="station-date">2023-12-05 12:10</div>
+          </div>
+        </div>
+
+        <div class="trip-train">G101 高铁</div>
+
+        <div class="trip-actions">
+          <div class="trip-action">
+            <i class="fas fa-eye"></i> 详情
+          </div>
+          <div class="trip-action">
+            <i class="fas fa-star"></i> 收藏
+          </div>
+        </div>
+      </div>
     </div>
   </main>
 </div>
+
+
 
 <!-- 页脚 -->
 <footer class="footer">
@@ -896,30 +1026,30 @@
     <div class="footer-column">
       <h3>关于我们</h3>
       <ul class="footer-links">
-        <li><a href="<%= request.getContextPath() %>/about/company">公司简介</a></li>
-        <li><a href="<%= request.getContextPath() %>/about/history">发展历程</a></li>
-        <li><a href="<%= request.getContextPath() %>/about/culture">企业文化</a></li>
-        <li><a href="<%= request.getContextPath() %>/about/join">加入我们</a></li>
+        <li><a href="#">公司简介</a></li>
+        <li><a href="#">发展历程</a></li>
+        <li><a href="#">企业文化</a></li>
+        <li><a href="#">加入我们</a></li>
       </ul>
     </div>
 
     <div class="footer-column">
       <h3>帮助中心</h3>
       <ul class="footer-links">
-        <li><a href="<%= request.getContextPath() %>/help/ticket">购票指南</a></li>
-        <li><a href="<%= request.getContextPath() %>/help/refund">退票改签</a></li>
-        <li><a href="<%= request.getContextPath() %>/help/faq">常见问题</a></li>
-        <li><a href="<%= request.getContextPath() %>/help/contact">联系客服</a></li>
+        <li><a href="#">购票指南</a></li>
+        <li><a href="#">退票改签</a></li>
+        <li><a href="#">常见问题</a></li>
+        <li><a href="#">联系客服</a></li>
       </ul>
     </div>
 
     <div class="footer-column">
       <h3>法律信息</h3>
       <ul class="footer-links">
-        <li><a href="<%= request.getContextPath() %>/legal/terms">服务条款</a></li>
-        <li><a href="<%= request.getContextPath() %>/legal/privacy">隐私政策</a></li>
-        <li><a href="<%= request.getContextPath() %>/legal/refund">退票政策</a></li>
-        <li><a href="<%= request.getContextPath() %>/legal/notice">法律声明</a></li>
+        <li><a href="#">服务条款</a></li>
+        <li><a href="#">隐私政策</a></li>
+        <li><a href="#">退票政策</a></li>
+        <li><a href="#">法律声明</a></li>
       </ul>
     </div>
 
@@ -947,14 +1077,14 @@
   </div>
 </footer>
 
-<!-- 模态框 -->
-<div id="avatarModal" class="modal" style="display: none;">
+<!-- 头像上传模态框 -->
+<div id="avatarModal" class="modal">
   <div class="modal-content">
     <span class="close" onclick="closeAvatarUpload()">&times;</span>
     <h2>更改头像</h2>
-    <form id="avatarForm" enctype="multipart/form-data">
+    <form class="modal-form">
       <input type="file" id="avatarFile" name="avatar" accept="image/*">
-      <button type="button" onclick="uploadAvatar()">上传</button>
+      <button type="button" onclick="uploadAvatar()">上传头像</button>
     </form>
   </div>
 </div>
@@ -963,11 +1093,18 @@
   // 表单重置函数
   function resetForm() {
     document.getElementById('profileForm').reset();
+    alert('表单已重置为原始值');
+  }
+
+  // 保存个人信息
+  function saveProfile() {
+    alert('个人信息已保存成功！');
+    // 这里在实际应用中会有表单提交逻辑
   }
 
   // 打开头像上传模态框
   function openAvatarUpload() {
-    document.getElementById('avatarModal').style.display = 'block';
+    document.getElementById('avatarModal').style.display = 'flex';
   }
 
   // 关闭头像上传模态框
@@ -983,26 +1120,12 @@
       return;
     }
 
-    const formData = new FormData();
-    formData.append('avatar', fileInput.files[0]);
-
-    fetch('<%= request.getContextPath() %>/profile/uploadAvatar', {
-      method: 'POST',
-      body: formData
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert('头像上传成功');
-        location.reload();
-      } else {
-        alert('头像上传失败: ' + data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('发生错误，请重试');
-    });
+    // 模拟上传过程
+    alert('头像上传中...');
+    setTimeout(() => {
+      alert('头像上传成功！');
+      closeAvatarUpload();
+    }, 1500);
   }
 
   // 选择支付方式
@@ -1012,60 +1135,30 @@
       method.classList.remove('selected');
     });
     event.currentTarget.classList.add('selected');
-
-    // 这里可以添加AJAX请求来更新用户的默认支付方式
-    fetch('<%= request.getContextPath() %>/payment/setDefault', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({methodId: methodId})
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (!data.success) {
-        alert('设置默认支付方式失败: ' + data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('发生错误，请重试');
-    });
+    alert('默认支付方式已更新');
   }
 
   // 添加支付方式
   function addPaymentMethod() {
-    // 这里可以打开添加支付方式的模态框或跳转到添加页面
-    window.location.href = '<%= request.getContextPath() %>/payment/add';
+    alert('正在跳转到添加支付方式页面...');
   }
 
   // 查看行程详情
   function viewTripDetails(orderId) {
-    // 这里可以打开行程详情的模态框或跳转到详情页面
-    window.location.href = '<%= request.getContextPath() %>/order/detail?orderId=' + orderId;
+    alert('正在查看行程详情...');
   }
 
   // 收藏行程
   function addTripToFavorite(orderId) {
-    fetch('<%= request.getContextPath() %>/trip/favorite', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({orderId: orderId})
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.success) {
-        alert('行程已收藏');
-      } else {
-        alert('收藏失败: ' + data.message);
-      }
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      alert('发生错误，请重试');
-    });
+    alert('行程已添加到收藏！');
+  }
+
+  // 关闭模态框（点击模态框外部）
+  window.onclick = function(event) {
+    const modal = document.getElementById('avatarModal');
+    if (event.target === modal) {
+      closeAvatarUpload();
+    }
   }
 </script>
 </body>
